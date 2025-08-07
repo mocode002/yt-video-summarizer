@@ -1,0 +1,15 @@
+This YouTube video explains a robust method for scraping e-commerce data by targeting a website's backend API rather than parsing its HTML directly.
+
+The presenter demonstrates how to use Chrome Developer Tools (specifically the Network tab, filtered by Fetch/XHR) to identify the JSON responses that a site uses to populate its front end. By interacting with the website (scrolling, searching, clicking products), you can observe the API calls for product details, availability, and search results. The key is to understand how to manipulate parameters within these API URLs (e.g., product IDs, search terms, pagination `start` indexes).
+
+The video addresses common challenges in web scraping:
+1.  **Getting Blocked:** When scaling up, requests often get blocked. The solution is to use high-quality proxies (residential, mobile, or sticky sessions) to mimic real user traffic. The video's sponsor, ProxyScrape, is recommended for this purpose.
+2.  **TLS Fingerprinting:** Standard Python HTTP libraries like `requests` can be detected due to their unique TLS fingerprint. The solution is to use libraries like `curl_cffi` with an `impersonate='chrome'` option to mimic a real browser's fingerprint, allowing requests to succeed (e.g., returning a 200 status code instead of a 403).
+
+For implementing the scraper in code, the presenter suggests:
+*   Using `curl_cffi` for making requests.
+*   Modeling the API response data using **Pydantic** to provide structured access and easier manipulation of fields like product IDs, prices, and descriptions.
+*   Organizing the code into functions for creating a session and querying specific API endpoints (e.g., `query_search_api`, `query_detail_api`).
+*   Including error handling for non-200 responses.
+
+The presenter concludes by stating that this API-driven approach is the most effective and easiest way to scrape data from modern websites, as backend APIs are inherently difficult for site owners to protect from their own frontend access. He also advises users to be considerate, avoid "hammering" sites, and only extract publicly available data.
