@@ -11,6 +11,7 @@ st.markdown("Summarize YouTube videos using Gemini AI and transcripts. Just past
 with st.form("summarizer_form"):
     url = st.text_input("Enter a YouTube URL", placeholder="https://www.youtube.com/watch?v=...")
     model = st.selectbox("Choose Gemini Model", ["gemini-2.5-flash", "gemini-1.5-flash"])
+    style = st.selectbox("Choose Summary Style", ["summary", "tldr", "bullets", "eli5"])
     verbose = st.checkbox("Verbose (debug info)")
     submitted = st.form_submit_button("Generate Summary")
 
@@ -21,7 +22,7 @@ if submitted:
     else:
         with st.spinner("Fetching transcript and generating summary..."):
             try:
-                summary = summarize_video(url, model=model, verbose=verbose)
+                summary = summarize_video(url, model=model,style=style, verbose=verbose)
 
                 if verbose:
                     transcript = summary[1]

@@ -14,6 +14,8 @@ def main():
 
     parser.add_argument("--url", required=False, help="YouTube video URL")
     parser.add_argument("--model", default="gemini-2.5-flash", help="Gemini model to use")
+    parser.add_argument("--style", default="summary", choices=["summary", "tldr", "bullets", "eli5"],
+                        help="Summary style to use")
     parser.add_argument("--output", help="Optional path to save summary to .txt file")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
 
@@ -29,14 +31,13 @@ def main():
         input_url = test_url
 
     try:
-        summuary = summarize_video(input_url, model=args.model, verbose=args.verbose)[0]
+        summuary = summarize_video(input_url, model=args.model,style=args.style, verbose=args.verbose)[0]
         print("\nSummary:\n", summuary)
 
         if args.output:
             with open(args.output, "w") as f:
                 f.write(summuary)
             logging.info(f"Summary saved to: {args.output}")
-
 
     except Exception as e:
         logging.error(e)
