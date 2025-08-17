@@ -11,7 +11,7 @@ It fetches transcripts, summarizes them with different styles, and offers a simp
 - Supports Gemini AI models (`gemini-2.5-flash`, `gemini-1.5-flash`, etc.)
 - Streamlit UI for easy interaction and summary download
 - Summarizes transcript with customizable styles (Summary, TL;DR, Bullet points, ELI5)
-- Caching for repeated video summaries to reduce API calls (planned)
+- Caching for repeated video summaries to reduce API calls
 - Displays video title and thumbnail via YouTube Data API (planned)
 
 ---
@@ -72,3 +72,5 @@ MIT License
 -   [Google Gemini](https://cloud.google.com/genai)
      
 -   [Streamlit](https://streamlit.io/)
+    
+-   [Redis](https://redis.io/)

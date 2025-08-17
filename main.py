@@ -1,4 +1,4 @@
-from utils import summarize_video
+from summarizer import summarize_video
 import argparse
 import logging
 

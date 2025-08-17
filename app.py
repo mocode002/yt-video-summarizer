@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import summarize_video
+from summarizer import summarize_video
 
 st.set_page_config(page_title="🎧 YouTube Video Summarizer", layout="centered")
 
@@ -26,8 +26,9 @@ if submitted:
 
                 if verbose:
                     transcript = summary[1]
-                    st.subheader("📜 Transcript")
-                    st.text(transcript[:3000] + "..." if len(transcript) > 3000 else transcript)
+                    if transcript:
+                        st.subheader("📜 Transcript")
+                        st.text(transcript[:3000] + "..." if len(transcript) > 3000 else transcript)
 
                 st.success("✅ Summary generated!")
                 st.subheader("🧠 Summary")
