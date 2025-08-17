@@ -23,6 +23,7 @@ if submitted:
         with st.spinner("Fetching transcript and generating summary..."):
             try:
                 summary = summarize_video(url, model=model,style=style, verbose=verbose)
+                st.session_state["summary"] = summary[0]
 
                 if verbose:
                     transcript = summary[1]
@@ -31,16 +32,19 @@ if submitted:
                         st.text(transcript[:3000] + "..." if len(transcript) > 3000 else transcript)
 
                 st.success("✅ Summary generated!")
-                st.subheader("🧠 Summary")
-                st.markdown(summary[0])
-
-                # Download button
-                st.download_button(
-                    label="💾 Download Summary as .txt",
-                    data=summary[0],
-                    file_name="youtube_summary.txt",
-                    mime="text/plain"
-                )
 
             except Exception as e:
                 st.error(f"❌ An error occurred: {e}")
+
+if "summary" in st.session_state:
+    summary = st.session_state["summary"]
+    st.subheader("🧠 Summary")
+    st.markdown(summary)
+
+    # Download button
+    st.download_button(
+        label="💾 Download Summary as .txt",
+        data=summary[0],
+        file_name="youtube_summary.txt",
+        mime="text/plain"
+    )
