@@ -1,6 +1,5 @@
 import streamlit as st
-from config import get_gemini_client
-from transcript import get_transcript
+from utils import summarize_video
 
 st.set_page_config(page_title="🎧 YouTube Video Summarizer", layout="centered")
 
@@ -22,33 +21,21 @@ if submitted:
     else:
         with st.spinner("Fetching transcript and generating summary..."):
             try:
-                client = get_gemini_client()
-                transcript = get_transcript(url)
+                summary = summarize_video(url, model=model, verbose=verbose)
 
                 if verbose:
+                    transcript = summary[1]
                     st.subheader("📜 Transcript")
                     st.text(transcript[:3000] + "..." if len(transcript) > 3000 else transcript)
 
-                prompt = (
-                    "You are a helpful assistant. Summarize the following YouTube video transcript:\n\n"
-                    f"{transcript}"
-                )
-
-                response = client.models.generate_content(
-                    model=model,
-                    contents=prompt
-                )
-
-                summary = response.text
-
                 st.success("✅ Summary generated!")
                 st.subheader("🧠 Summary")
-                st.markdown(summary)
+                st.markdown(summary[0])
 
                 # Download button
                 st.download_button(
                     label="💾 Download Summary as .txt",
-                    data=summary,
+                    data=summary[0],
                     file_name="youtube_summary.txt",
                     mime="text/plain"
                 )

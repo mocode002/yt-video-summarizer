@@ -1,5 +1,4 @@
-from config import get_gemini_client
-from transcript import get_transcript
+from utils import summarize_video
 import argparse
 import logging
 
@@ -7,37 +6,6 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
-def build_summary_prompt(transcript: str) -> str:
-    # prompt = f"Summarize the following YouTube video transcript:\n\n{transcript}"
-    return (
-        "You are a helpful assistant. Summarize the following YouTube video transcript:\n\n"
-        f"{transcript}"
-    )
-
-
-def summarize_video(url: str, model: str = "gemini-2.5-flash", verbose: bool = False) -> str:
-    client = get_gemini_client()
-
-    try:
-        transcript = get_transcript(url)
-        if verbose:
-            logging.info("Transcript successfully fetched.")
-    except Exception as e:
-        raise RuntimeError(f"Error fetching transcript: {e}")
-
-    prompt = build_summary_prompt(transcript)
-
-    try:
-        response = client.models.generate_content(
-            model=model,
-            contents=prompt
-        )
-        if verbose:
-            logging.info("Summary successfully generated.")
-        return response.text
-    except Exception as e:
-        raise RuntimeError(f"Error generating summary: {e}")
 
 def main():
     test_url = 'https://www.youtube.com/watch?v=ji8F8ppY8bs'
@@ -61,7 +29,7 @@ def main():
         input_url = test_url
 
     try:
-        summuary = summarize_video(input_url, model=args.model, verbose=args.verbose)
+        summuary = summarize_video(input_url, model=args.model, verbose=args.verbose)[0]
         print("\nSummary:\n", summuary)
 
         if args.output:
