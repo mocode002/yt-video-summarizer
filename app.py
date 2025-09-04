@@ -24,9 +24,8 @@ if submitted:
             try:
                 summary = summarize_video(url, model=model,style=style, verbose=verbose)
                 st.session_state["summary"] = summary[0]
-
+                transcript = summary[1]
                 if verbose:
-                    transcript = summary[1]
                     if transcript:
                         st.subheader("📜 Transcript")
                         st.text(transcript[:3000] + "..." if len(transcript) > 3000 else transcript)
@@ -48,3 +47,13 @@ if "summary" in st.session_state:
         file_name="youtube_summary.txt",
         mime="text/plain"
     )
+
+    with st.expander("Transcript"):
+        st.text_area("Raw Transcript", transcript, height=300)
+
+        st.download_button(
+            label="📥 Download Transcript",
+            data=transcript,
+            file_name="transcript.txt",
+            mime="text/plain"
+        )
